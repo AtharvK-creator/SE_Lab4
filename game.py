@@ -13,17 +13,26 @@ PHASES = [random.uniform(0, math.tau) for _ in range(3)]
 
 def sky_color(wave):
     """Return an (r, g, b) sky colour for the current wave, or None for the default."""
-    pass
+    sky_colors = [
+        (10, 10, 30),   # Wave 1: Midnight dark blue
+        (25, 10, 40),   # Wave 2: Deep purple
+        (35, 15, 25),   # Wave 3: Dark crimson
+        (10, 30, 40),   # Wave 4: Dark cyan
+        (30, 25, 10),   # Wave 5: Dark bronze
+    ]
+    base = sky_colors[(wave - 1) % len(sky_colors)]
+    brighten = min(30, (wave - 1) * 4)
+    return (min(255, base[0] + brighten), min(255, base[1] + brighten), min(255, base[2] + brighten))
 
 
 def on_humanoid_rescued(humanoid):
     """Called when the player catches a falling humanoid; add a bonus or celebration here."""
-    pass
+    humanoid.rescue_timer = 1.5
 
 
 def bonus_life_threshold():
     """Return a score value at which the player earns an extra life, or None to disable bonus lives."""
-    pass
+    return 10000
 
 
 def wrap_delta(a, b):
@@ -42,8 +51,11 @@ class Humanoid:
         self.state = "ground"
         self.fall_from = self.y
         self.vy = 0.0
+        self.rescue_timer = 0.0
 
     def update(self, dt):
+        if self.rescue_timer > 0:
+            self.rescue_timer -= dt
         if self.state == "falling":
             self.vy += 300 * dt
             self.y += self.vy * dt
@@ -199,11 +211,15 @@ class Game:
     def draw_radar(self, screen):
         pygame.draw.rect(screen, (10, 10, 30), (0, 0, VIEW_W, RADAR_H))
         pygame.draw.rect(screen, (90, 90, 140), (0, 0, VIEW_W, RADAR_H), 1)
+        # Viewport rectangle indicator
+        cam_rx = ((self.player.x - VIEW_W / 2) % WORLD_W) / WORLD_W * VIEW_W
+        cam_rw = (VIEW_W / WORLD_W) * VIEW_W
+        pygame.draw.rect(screen, (70, 70, 110), (cam_rx, 2, cam_rw, RADAR_H - 4), 1)
         blips = [(h.x, h.y, (90, 230, 120)) for h in self.humanoids]
         blips += [(l.x, l.y, (255, 90, 90) if l.mutant else (230, 200, 60)) for l in self.landers]
         blips.append((self.player.x, self.player.y, (255, 255, 255)))
         for x, y, color in blips:
-            rx = self.screen_x(x) % VIEW_W
+            rx = (x % WORLD_W) / WORLD_W * VIEW_W
             ry = (y - PLAY_TOP) / (VIEW_H - PLAY_TOP) * (RADAR_H - 8) + 4
             pygame.draw.rect(screen, color, (rx - 2, ry - 2, 4, 4))
 
@@ -216,6 +232,9 @@ class Game:
             sx = self.screen_x(humanoid.x)
             if -20 < sx < VIEW_W + 20:
                 pygame.draw.rect(screen, (90, 230, 120), (sx - 3, humanoid.y - 10, 6, 14))
+                if getattr(humanoid, "rescue_timer", 0) > 0:
+                    popup = self.font.render("+500 RESCUE!", True, (255, 255, 100))
+                    screen.blit(popup, (sx - popup.get_width() // 2, humanoid.y - 28))
         for lander in self.landers:
             sx = self.screen_x(lander.x)
             if -20 < sx < VIEW_W + 20:

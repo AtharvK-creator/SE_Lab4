@@ -82,10 +82,41 @@ defender/
 
 ---
 
+## Execution Overview & Results
+
+### Before Task Execution
+
+**Initial State Description:**
+- **Radar Strip Bug:** The radar plotted entity coordinates relative to player position (`screen_x(x) % VIEW_W`) instead of absolute world position (`x / WORLD_W * VIEW_W`). As a result, radar blips only clustered around the player rather than giving a full-world overview.
+- **Sky Color:** `sky_color(wave)` was unimplemented (`pass`), producing a constant static near-black sky background on all waves.
+- **Humanoid Rescue:** `on_humanoid_rescued(humanoid)` was unimplemented (`pass`), offering no extra visual feedback when saving a falling humanoid.
+- **Bonus Lives:** `bonus_life_threshold()` returned `None` / `pass`, disabling extra life awards regardless of player score.
+
+#### Video Demo (Before):
+<!-- Paste your 10-second video demo link or file of gameplay BEFORE changes here -->
+`[Insert Before Gameplay Video / Link Here]`
+
+---
+
+### After Tasks Execution
+
+**Completed Changes Description:**
+- **Task 1 (Fixed Radar Bug):** Corrected `draw_radar` to compute blip coordinates using absolute world positions: `(x % WORLD_W) / WORLD_W * VIEW_W`. Entities across all 3200 world units are now accurately displayed on the radar strip. Included a viewport rectangle showing camera placement.
+- **Task 2 (Dynamic Sky Color):** Implemented `sky_color(wave)` to dynamically shift hues (midnight blue, purple, crimson, cyan, bronze) and increase brightness across escalating waves.
+- **Task 3 (Humanoid Rescue Feedback):** Implemented `on_humanoid_rescued(humanoid)` to activate a `+500 RESCUE!` floating popup label above rescued humanoids.
+- **Task 4 (Bonus Lives Threshold):** Implemented `bonus_life_threshold()` to return `10000`, granting an extra life whenever the player score crosses multiples of 10,000.
+
+#### Video Demo (After):
+<!-- Paste your 10-second video demo link or file of gameplay AFTER changes here -->
+`[Insert After Gameplay Video / Link Here]`
+
+---
+
 ## Submission Checklist
 
 Submission is only the following three things:
 
-- [] A 10-second video of gameplay **before** your changes, showing the bug/broken behavior
-- [] A 10-second video of gameplay **after** your changes, showing the bug fixed and the new features working
-- [] The Chat/LLM used page link, with the complete chat history
+- [ ] A 10-second video of gameplay **before** your changes, showing the bug/broken behavior
+- [ ] A 10-second video of gameplay **after** your changes, showing the bug fixed and the new features working
+- [ ] The Chat/LLM used page link, with the complete chat history
+
