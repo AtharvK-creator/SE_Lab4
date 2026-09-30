@@ -118,5 +118,5 @@ Submission is only the following three things:
 
 - [ ] A 10-second video of gameplay **before** your changes, showing the bug/broken behavior
 - [ ] A 10-second video of gameplay **after** your changes, showing the bug fixed and the new features working
-- [ ] The Chat/LLM used page link, with the complete chat history
+- [ https://chatgpt.com/c/6abd1d71-684c-83ee-a7d6-ac812443ba15] The Chat/LLM used page link, with the complete chat history
 
