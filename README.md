@@ -94,7 +94,7 @@ defender/
 
 #### Video Demo (Before):
 <!-- Paste your 10-second video demo link or file of gameplay BEFORE changes here -->
-`[Insert Before Gameplay Video / Link Here]`
+`https://drive.google.com/file/d/1CfVBbfefeCM9-PccpvlT4zDBF46pD0Bu/view?usp=sharing`
 
 ---
 
@@ -108,7 +108,7 @@ defender/
 
 #### Video Demo (After):
 <!-- Paste your 10-second video demo link or file of gameplay AFTER changes here -->
-`[Insert After Gameplay Video / Link Here]`
+`https://drive.google.com/file/d/1qo9ASGpndAlEw-atQ7h1Fp33zQVrIRTS/view?usp=sharing`
 
 ---
 
